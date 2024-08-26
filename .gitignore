@@ -9,4 +9,4 @@ backend/utils/__pycache__
 backend/utils/chat/__pycache__
 backend/utils/extractor/__pycache__
 backend/utils/vector_store/__pycache__
-embeddings
+embeddings/
