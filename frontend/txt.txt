@@ -1,0 +1,34 @@
+.
+├── README.md
+├── backend
+│   ├── backend.py
+│   └── utils
+│       │   ├── __pycache__
+│       │   ├── chat.py
+│       │   └── embedding.py
+│       ├── chunk.py
+│       ├── extension.py
+│       ├── extractor
+│       │   ├── csv_extractor.py
+│       │   ├── docx_extractor.py
+│       │   ├── pdf_extractor.py
+│       │   ├── txt_extractor.py
+│       │   └── xlxs_extractor.py
+│       ├── hash.py
+│       └── vector_store
+│           └── vector_store.py
+├── frontend
+│   ├── frontend.py
+│   └── icons
+│       ├── csv.png
+│       ├── default.png
+│       ├── docx.png
+│       ├── jpeg.png
+│       ├── jpg.png
+│       ├── pdf.png
+│       ├── png.png
+│       ├── txt.png
+│       ├── xls.png
+│       └── xlsx.png
+├── poetry.lock
+└── pyproject.toml
