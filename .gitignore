@@ -4,3 +4,4 @@ backend/embeddings/
 chroma.log
 env/
 .vscode/
+poetry.lock
