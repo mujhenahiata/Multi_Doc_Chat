@@ -1,6 +1,0 @@
-backend/db/
-backend/uploads/
-backend/embeddings/
-chroma.log
-env/
-.vscode/
