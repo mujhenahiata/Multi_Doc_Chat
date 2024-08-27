@@ -66,6 +66,25 @@ def create_directory(directory_path):
     except OSError as e:
         print(f"Error creating directory: {e}")
 
+#Function to split the filenames with blank spaces only        
+def split_filename(file_name):
+    """
+    Splits a filename into parts based on spaces.
+
+    Args:
+        file_name (str): The name of the file.
+
+    Returns:
+        list: A list of parts of the filename split by spaces.
+    """
+    try:
+        # Split the filename by spaces
+        file_parts = file_name.split(" ")
+        return file_parts
+    except Exception as e:
+        print(f"Error splitting filename: {e}")
+        return []
+
 # Save uploaded files locally
 @app.post("/upload-file/")
 async def upload_file(file: UploadFile = File(...)):
@@ -81,7 +100,14 @@ async def upload_file(file: UploadFile = File(...)):
     try:
         upload_directory = 'uploads'
         create_directory(upload_directory)
-        file_path = os.path.join(upload_directory, file.filename)
+        # Keeping the original file name as it is.
+        file_name = file.filename
+        
+        # Split the filename into parts
+        file_parts = split_filename(file_name)
+        print(f"File parts: {file_parts}")
+        
+        file_path = os.path.join(upload_directory, file_name)
         
         # Save the uploaded file to the specified directory
         with open(file_path, "wb") as buffer:
