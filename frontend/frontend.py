@@ -96,13 +96,13 @@ if st.session_state.file_names:
     st.sidebar.subheader("Uploaded Files")
     files_to_display = [file for file in st.session_state.file_names if file["name"] not in st.session_state.deleted_files]
     for index, file in enumerate(files_to_display):
-        icon_path = file["icon"]
+        # icon_path = file["icon"]
         file_name = file["name"]
 
         col1, col2, col3 = st.sidebar.columns([1, 4, 1])  # Adjust column widths as needed
-        with col1:
-            icon_image = Image.open(icon_path)
-            col1.image(icon_image, width=20)
+        # with col1:
+        #     icon_image = Image.open(icon_path)
+        #     col1.image(icon_image, width=20)
         with col2:
             file_name_style = "color: lightgray;"
             col2.markdown(f"<span style='{file_name_style}'>{file_name}</span>", unsafe_allow_html=True)

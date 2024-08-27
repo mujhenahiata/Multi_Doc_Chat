@@ -20,7 +20,7 @@ def get_chat_response(question, collections: List[str]) -> Generator[str, None, 
         Context:
     """
         prompt_embedding = ollama.embeddings(
-            model="nomic-embed-text", prompt=question)["embedding"]
+            model="all-minilm", prompt=question)["embedding"]
 
         # Collect results from all specified collections
         results_list = []
@@ -35,7 +35,7 @@ def get_chat_response(question, collections: List[str]) -> Generator[str, None, 
 
         # Generate response based on selected chunks
         response = ollama.chat(
-            model="llama3:8b-instruct-q3_K_S",
+            model="llama3",
             messages=[
                 {
                     "role": "system",

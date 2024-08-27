@@ -7,7 +7,7 @@ from pydantic import BaseModel
 import chromadb
 from typing import List
 # Hash dependencies
-from utils.hash import add_to_hash_map, file_hash_map
+from utils.hash import add_to_hash_map, get_file_hash_map
 # Embeddding dependencies
 from utils.chat.embedding import get_embeddings
 # Chat response dependencies
@@ -26,6 +26,9 @@ from utils.extractor.csv_extractor import extract_text_from_csv
 from utils.extractor.xlxs_extractor import extract_text_from_xlsx
 
 # Class model for the request body
+
+file_hash_map = get_file_hash_map()
+
 class Data(BaseModel):
     """
     Model to define the request body for asking questions.
@@ -134,7 +137,7 @@ async def process_file(file: UploadFile = File(...)):
         file_path = upload_response["file_path"]
         content = extract_text(file_path)
         chunks = chunk_text(content)
-        embeddings = get_embeddings(file.filename, "nomic-embed-text", chunks)
+        embeddings = get_embeddings(file.filename, "all-minilm", chunks)
         chromadb_vector_store(embeddings, chunks, collection_name=file.filename)
         add_to_hash_map(file.filename)
         return {"message": "File processed and embeddings stored successfully"}
@@ -170,8 +173,9 @@ async def ask_question(data: Data):
 
         # StreamingResponse to stream the response
         return StreamingResponse(get_chat_response(question, file_names), media_type='text/event-stream')
+
     except Exception as e:
-        return JSONResponse(status_code=500, content={"error": str(e)})
+        return JSONResponse(status_code=500, content={"error": e})
 
 # Function to delete the embeddings and collection from ChromaDB
 def delete_from_chromadb(collection_name):
