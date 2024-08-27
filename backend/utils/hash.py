@@ -1,9 +1,7 @@
 import hashlib
 
-def file_hash_map(): 
-    # Hash map to keep track of file metadata
-    file_hash_map = {}
-    return file_hash_map
+# Hash map to keep track of file metadata
+file_hash_map = {}
 
 # Add file metadata to the hash map
 def add_to_hash_map(file_name):
@@ -14,7 +12,7 @@ def add_to_hash_map(file_name):
         file_name (str): The name of the file.
     """
     try:
-        file_hash_map()[file_name] = generate_hash(file_name)
+        file_hash_map[file_name] = generate_hash(file_name)
     except Exception as e:
         print(f"Error adding to hash map: {e}")
 
@@ -37,3 +35,6 @@ def generate_hash(input_string):
         print(f"Error generating hash: {e}")
         return ""
 
+# Example usage
+add_to_hash_map("example_file.txt")
+print(file_hash_map)
