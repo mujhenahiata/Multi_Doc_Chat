@@ -28,3 +28,5 @@ def chunk_text(text, chunk_size=1000, chunk_overlap=50):
     except Exception as e:
         print(f"Error chunking text: {e}")
         return []
+    
+    

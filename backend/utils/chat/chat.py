@@ -20,7 +20,7 @@ def get_chat_response(question, collections: List[str]) -> Generator[str, None, 
         Context:
     """
         prompt_embedding = ollama.embeddings(
-            model="nomic-embed-text", prompt=question)["embedding"]
+            model="all-minilm", prompt=question)["embedding"]
 
         # Collect results from all specified collections
         results_list = []
@@ -53,7 +53,6 @@ def get_chat_response(question, collections: List[str]) -> Generator[str, None, 
         print(f"Error generating chat response: {e}")
         yield ""
 
-# Function to combine results and pick top 7 chunks
 def combine_and_select_top_chunks(results_list, top_n=7):
     """
     Combine results from multiple collections and select the top N chunks based on similarity.
@@ -65,13 +64,14 @@ def combine_and_select_top_chunks(results_list, top_n=7):
     Returns:
     List[str]: The top N chunks of text.
     """
-    try:    
+    try:
         combined_results = []
         for result in results_list:
-            distances = result.get("distances", [])[0]
-            documents = result.get("documents", [])[0]
-            combined_results.extend(zip(distances, documents))
-        
+            distances = result.get("distances", [])
+            documents = result.get("documents", [])
+            if distances and documents:
+                combined_results.extend(zip(distances, documents))
+
         # Sort combined results by distance (similarity score)
         combined_results.sort(key=lambda x: x[0])
         
