@@ -138,7 +138,8 @@ async def process_file(file: UploadFile = File(...)):
         content = extract_text(file_path)
         chunks = chunk_text(content)
         embeddings = get_embeddings(file.filename, "all-minilm", chunks)
-        chromadb_vector_store(embeddings, chunks, collection_name=file.filename)
+        collection_name = file.filename.replace(" ", "_").split(".")[0]
+        chromadb_vector_store(embeddings, chunks, collection_name=collection_name)
         add_to_hash_map(file.filename)
         return {"message": "File processed and embeddings stored successfully"}
     except Exception as e:
@@ -167,16 +168,22 @@ async def ask_question(data: Data):
         if not file_hash_map:
             return JSONResponse(status_code=400, content={"error": "No file uploaded"})
         
+        modified_file_names = []
         for file_name in file_names:
             if file_name not in file_hash_map:
                 return JSONResponse(status_code=400, content={"error": f"File not found: {file_name}"})
+            
+            # Modify the file name to match the format used when storing embeddings
+            modified_file_name = file_name.replace(" ", "_").split(".")[0]
+            modified_file_names.append(modified_file_name)
 
         # StreamingResponse to stream the response
-        return StreamingResponse(get_chat_response(question, file_names), media_type='text/event-stream')
+        return StreamingResponse(get_chat_response(question, modified_file_names), media_type='text/event-stream')
 
     except Exception as e:
-        return JSONResponse(status_code=500, content={"error": e})
-
+        return JSONResponse(status_code=500, content={"error": str(e)})
+    
+    
 # Function to delete the embeddings and collection from ChromaDB
 def delete_from_chromadb(collection_name):
     """
